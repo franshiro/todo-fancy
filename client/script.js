@@ -1,6 +1,7 @@
 $(document).ready(function () {
     loadTodo()
     readyFn()
+    $('[data-toggle="tooltip"]').tooltip()
 });
 
 function readyFn(){
@@ -11,15 +12,22 @@ function readyFn(){
 function hideButton(){
    let token = localStorage.getItem('token')
     if(token){
+        $('#newTodo').append(`
+            <button class="add-new-todo" data-toggle="modal" data-target="#addTodo">
+                <i class="fas fa-plus"></i>
+                    ADD TO-DO
+            </button>
+        `)
         $('#buttonSignOutLogin').empty()
         $('#buttonSignOutLogin').append(`
-            <button type="button" id="buttonSignOut" class="btn btn-primary" onclick="signOut()">Sign Out</button>
+            <button type="button" id="buttonSignOut" class="buttonLogoutLogin" onclick="signOut()">Sign Out</button>
         `)
     }
     else{
+        $('#newTodo').empty()
         $('#buttonSignOutLogin').empty()
         $('#buttonSignOutLogin').append(`
-        <button type="button" id="buttonLogin" class="btn btn-primary" data-toggle="modal" data-target="#modalLogin">
+        <button type="button" id="buttonLogin" class="buttonLogoutLogin" data-toggle="modal" data-target="#modalLogin">
                     Login
         </button>
         `)
@@ -37,7 +45,6 @@ function onSignIn(googleUser) {
         }
     })
     .done(data => {
-        // console.log(id_token)
         localStorage.setItem('token', data.token)
         loadTodo()
         readyFn()
@@ -49,15 +56,19 @@ function onSignIn(googleUser) {
 
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-    console.log('User signed out.');
-    localStorage.removeItem('token')
-    readyFn()
-    loadTodo()
-    });
-    // console.log('user signed out')
-    // localStorage.removeItem('token')
-    // loadTodo()
+    if(auth2){
+        auth.signOut()
+        .then(function() {
+            localStorage.removeItem('token')
+            readyFn()
+            loadTodo()
+        })
+    } else {
+        console.log('User signed out.');
+        localStorage.removeItem('token')
+        readyFn()
+        loadTodo()
+    }
 }
 
 function signin(){
@@ -66,7 +77,7 @@ function signin(){
         url : `http://localhost:3000/signin`,
         data : {
             email : $('#loginEmail').val(),
-            password : document.getElementById('loginPassword').value
+            password : $('#loginPassword').val()
         }
     })
     .done(response => {
@@ -95,7 +106,6 @@ function signup(){
         
     })
     .fail(err => {
-        console.log(err)
         $('#isiWeb').empty()
         $('#isiWeb').append(`
             <div class="alert alert-danger" role="alert" id="emailtaken">
@@ -107,7 +117,6 @@ function signup(){
 }
 
 function loadTodo(){
-    // console.log(localStorage.getItem('token'))
     $.ajax({
         method : 'GET',
         url : `http://localhost:3000/users/showall`,
@@ -116,7 +125,6 @@ function loadTodo(){
         }
     })
     .done(response => {
-        console.log(response.todo)
         $('#isiWeb').empty()
         response.todo.forEach(list => {
             let finish = ""
@@ -124,7 +132,7 @@ function loadTodo(){
                 finish = "alert alert-success"
             }
             else{
-                finish = "alert alert-danger"
+                finish = "alert alert-dark"
             }
             $('#isiWeb').append(`
                  <div class="${finish}" role="alert" align="center" onclick="getInfo('${list._id}')" data-toggle="modal" data-target="#detailTodo">
@@ -159,7 +167,6 @@ function addTodo(){
     })
     .done(response => {
         loadTodo()
-        // console.log(response)
     })
     .fail(err => {
         console.log(err)
@@ -208,21 +215,33 @@ function getInfo(id){
         </div>
         <div class="form-group">
             Due date : 
-                <input type="date" " id="detailDate" width="276" value="${newDate}"/>
+            <input type="date" " id="detailDate" width="276" value="${newDate}"/>
         </div>    
         <div class="form-group">
         <label for="exampleFormControlSelect1">isFinish : ${value}</label>
-        <div class="btn-check-log">
-            <button type="submit" class="btn-check-login" onclick="updateTodo('${response.todo._id}')" data-dismiss="modal">Update</button>
-        </div>
-        <div class="btn-check-log">
-            <button type="submit" class="btn-check-login" onclick="finishTodo('${response.todo._id}')" data-dismiss="modal"> mark as Finish</button>
-        </div>
-        <div class="btn-check-log">
-             <button type="submit" class="btn-check-login" onclick="unfinishTodo('${response.todo._id}')" data-dismiss="modal">mark as unFinish</button>
-        </div>
-        <div class="btn-check-log">
-             <button type="submit" class="btn-check-login" onclick="deleteTodo('${response.todo._id}')" data-dismiss="modal">delete</button>
+        <div class="actionButton">
+            <div class="btn-check-log">
+                <button type="submit" class="btn-add-todo" onclick="updateTodo('${response.todo._id}')"  data-toggle="tooltip" title="Update Todo" data-dismiss="modal">
+                    <span style="font-size:25px">
+                        <i class="fas fa-wrench"></i>
+                    </span>
+                </button>
+                <button type="submit" class="btn-add-todo" onclick="finishTodo('${response.todo._id}')" data-toggle="tooltip" title="Mark as Finish" data-dismiss="modal"> 
+                    <span style="font-size:25px">
+                        <i class="fas fa-calendar-check"></i>
+                    </span>
+                </button>
+                <button type="submit" class="btn-add-todo" onclick="unfinishTodo('${response.todo._id}')" data-toggle="tooltip" title="Mark as Unfinish" data-dismiss="modal">
+                    <span style="font-size:25px">
+                        <i class="fas fa-undo-alt"></i>
+                    </span>
+                </button>
+                <button type="submit" class="btn-add-todo" onclick="deleteTodo('${response.todo._id}')" data-toggle="tooltip" title="Delete Todo" data-dismiss="modal">
+                    <span style="font-size:25px">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                </button>
+            </div>
         </div>
     </form>
         `)

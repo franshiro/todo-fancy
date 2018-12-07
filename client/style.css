@@ -1,18 +1,32 @@
 /* Remove the navbar's default margin-bottom and rounded borders */ 
+html, body {
+  width: 100%;
+  height: 100%;
+}
+body {
+  width : 100%;
+  height: 100%;
+  background-attachment : fixed;
+}
 .navbar {
     margin-bottom: 0;
     border-radius: 0;
-    color: white
+    color: white;
+    background-color: #b3c10c;
   }
   
   /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-  .row.content {height: 450px}
+  .row.content {
+    min-height: 600px;
+  }
   
+  .centerCol{
+    margin : 10px;
+  }
   /* Set gray background color and 100% height */
   .sidenav {
     padding-top: 20px;
-    background-color: #f1f1f1;
-    height: 100%;
+    background-color: #b7b8b6;
   }
   
   /* Set black background color, white text and some padding */
@@ -147,23 +161,54 @@
     background-color: #f58220;
     border: 0px solid transparent;
    }
-   .btn-check-log .btn-check-login {
+   .add-new-todo{
+     background-color: #b3c100;
+     width: 100%;
+     border-radius: 5px;
+     padding-top: 10px;
+     padding-bottom: 10px;
+     margin-bottom: 15px
+   }
+   button.buttonLogoutLogin:hover{
+     color: white;
+     background-color: red;
+     border : 2px solid red
+   }
+   .buttonLogoutLogin{
+     color: white;
+     background-color: #34675c;
+     border: 2px solid #34675c;
+     transition: all ease-in-out .3s;
+   }
+   .buttonLogoutLogin{
+     font-size : 16px;
+     border-radius: 5px;
+     padding: 5px 10px;
+     -ms-touch-action: manipulation;
+     touch-action: manipulation;
+     cursor: pointer;
+
+   }
+   .actionButton{
+     display: inline;
+     justify-content: space-between;
+   }
+   .btn-check-log .btn-action-Button {
     font-size: 16px;
     padding: 10px 0;
    }
-   button.btn-check-login:hover {
-       color: #fff;
-       background-color: #f58220;
-       border: 2px solid #f58220;
+   button.btn-action-Button:hover {
+    color: #fff;
+    background-color: #f58220;
+    border: 2px solid #f58220;
    }
-   .btn-check-login {
+   .btn-action-Button {
     color: #f58220;
     background-color: transparent;
     border: 2px solid #f58220;
     transition: all ease-in-out .3s;
    }
-   .btn-check-login {
-    display: inline-block;
+   .btn-action-Button {
     padding: 12px 0;
     margin-bottom: 0;
     line-height: 1.42857143;
@@ -178,8 +223,37 @@
     -ms-user-select: none;
     user-select: none;
     background-image: none;
-    border-radius: 0;
+    border-radius: 15px;
     width: 100%;
+   }
+  button.btn-add-todo:hover {
+    color: #fff;
+    background-color: #f58220;
+    border: 2px solid #f58220;
+  }
+  .btn-add-todo {
+    color: #f58220;
+    background-color: transparent;
+    border: 2px solid #f58220;
+    transition: all ease-in-out .3s;
+  }
+   .btn-add-todo {
+    padding: 12px 0;
+    margin-bottom: 0;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border-radius: 15px;
+    width: 10%;
    }
    .forgot-pass-fau a {
        text-decoration: none !important;

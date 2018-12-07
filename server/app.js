@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 app.use(cors())
+mongoose.set('useCreateIndex', true)
 mongoose.connect('mongodb://localhost/todos', {useNewUrlParser: true})
 
 app.use(logger('dev'));
